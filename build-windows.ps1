@@ -20,6 +20,9 @@ if (-Not (Test-Path "gfx\icon.ico")) {
 # Get version from version.py
 $VERSION = python src/version.py
 
+# Get system architecture
+$ARCH = $Env:PROCESSOR_ARCHITECTURE
+
 # Run Nuitka to compile the script with versioned name
 if ($ICON_PARAM) {
     python -m nuitka start.py `
@@ -27,7 +30,7 @@ if ($ICON_PARAM) {
         --onefile `
         --enable-plugin=pyside6 `
         --output-dir=dist `
-        --output-filename="multiringstrobodiscgen-v$VERSION.exe" `
+        --output-filename="multiringstrobodiscgen-v$VERSION-$ARCH.exe" `
         --include-module=svgwrite `
         --include-module=svglib `
         --include-module=tempfile `
@@ -41,7 +44,7 @@ if ($ICON_PARAM) {
         --onefile `
         --enable-plugin=pyside6 `
         --output-dir=dist `
-        --output-filename="multiringstrobodiscgen-v$VERSION.exe" `
+        --output-filename="multiringstrobodiscgen-v$VERSION-$ARCH.exe" `
         --include-module=svgwrite `
         --include-module=svglib `
         --include-module=tempfile `
@@ -50,9 +53,5 @@ if ($ICON_PARAM) {
         --windows-console-mode=disable
 }
 
-# Create a symlink for packages to use
-New-Item -Path "dist\multiringstrobodiscgen.exe" -ItemType SymbolicLink -Target "multiringstrobodiscgen-v$VERSION.exe" -Force
-
-$output_file = "dist\multiringstrobodiscgen-v$VERSION.exe"
+$output_file = "dist\multiringstrobodiscgen-v$VERSION-$ARCH.exe"
 Write-Output "The executable '$output_file' has been created."
-Write-Output "Symlink created at 'dist\multiringstrobodiscgen.exe' for package builds."

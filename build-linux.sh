@@ -20,6 +20,9 @@ fi
 # Get version from version.py
 VERSION=$(python src/version.py)
 
+# Get system architecture
+ARCH=$(uname -m)
+
 # Build with versioned output name
 if [ -n "$ICON_PARAM" ]; then
 	python -m nuitka start.py \
@@ -27,7 +30,7 @@ if [ -n "$ICON_PARAM" ]; then
 	--onefile \
 	--enable-plugin=pyside6 \
 	--output-dir=dist \
-	--output-filename="multiringstrobodiscgen-v${VERSION}.bin" \
+	--output-filename="multiringstrobodiscgen-v${VERSION}-${ARCH}.bin" \
 	--include-module=svgwrite \
 	--include-module=svglib \
 	--include-module=tempfile \
@@ -41,7 +44,7 @@ else
 	--onefile \
 	--enable-plugin=pyside6 \
 	--output-dir=dist \
-	--output-filename="multiringstrobodiscgen-v${VERSION}.bin" \
+	--output-filename="multiringstrobodiscgen-v${VERSION}-${ARCH}.bin" \
 	--include-module=svgwrite \
 	--include-module=svglib \
 	--include-module=tempfile \
@@ -50,11 +53,5 @@ else
 	--windows-console-mode=disable
 fi
 
-# Create a symlink for packages to use
-cd dist
-ln -sf "multiringstrobodiscgen-v${VERSION}.bin" "multiringstrobodiscgen.bin"
-cd ..
-
-output_file="dist/multiringstrobodiscgen-v${VERSION}.bin"
+output_file="dist/multiringstrobodiscgen-v${VERSION}-${ARCH}.bin"
 echo "The executable '${output_file}' has been created."
-echo "Symlink created at 'dist/multiringstrobodiscgen.bin' for package builds."
