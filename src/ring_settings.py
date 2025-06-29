@@ -7,11 +7,13 @@ from PySide6.QtCore import Qt
 
 
 class RingSettings(QWidget):
-    def __init__(self, parent=None, index=0, on_delete=None, on_change=None, tr_func=None):
+    def __init__(self, parent=None, index=0, on_delete=None, on_change=None, tr_func=None, on_move_up=None, on_move_down=None):
         super().__init__(parent)
         self.index = index
         self.on_delete = on_delete
         self.on_change = on_change
+        self.on_move_up = on_move_up
+        self.on_move_down = on_move_down
         self.tr = tr_func or (lambda x: x)
         
         self.setup_ui()
@@ -34,6 +36,48 @@ class RingSettings(QWidget):
         self.title_label.setStyleSheet("color: #ffffff; margin: 0px; padding: 0px; border: none; background: transparent; font-size: 18px; font-weight: bold;")
         self.title_label.setContentsMargins(0, 0, 0, 0)
         
+        # Move up button
+        move_up_button = QPushButton("↑")
+        move_up_button.setStyleSheet("""
+            QPushButton {
+                background-color: transparent;
+                border: none;
+                color: #ffffff;
+                font-size: 16px;
+                font-weight: bold;
+                padding: 2px 4px;
+                margin: 0px;
+            }
+            QPushButton:hover {
+                color: #cccccc;
+            }
+            QPushButton:pressed {
+                color: #999999;
+            }
+        """)
+        move_up_button.clicked.connect(self.request_move_up)
+        
+        # Move down button
+        move_down_button = QPushButton("↓")
+        move_down_button.setStyleSheet("""
+            QPushButton {
+                background-color: transparent;
+                border: none;
+                color: #ffffff;
+                font-size: 16px;
+                font-weight: bold;
+                padding: 2px 4px;
+                margin: 0px;
+            }
+            QPushButton:hover {
+                color: #cccccc;
+            }
+            QPushButton:pressed {
+                color: #999999;
+            }
+        """)
+        move_down_button.clicked.connect(self.request_move_down)
+        
         delete_button = QPushButton(self.tr('remove'))
         delete_button.setStyleSheet("""
             QPushButton {
@@ -55,6 +99,8 @@ class RingSettings(QWidget):
         
         header_layout.addWidget(self.title_label)
         header_layout.addStretch()
+        header_layout.addWidget(move_up_button)
+        header_layout.addWidget(move_down_button)
         header_layout.addWidget(delete_button)
         frame_layout.addLayout(header_layout)
         
@@ -329,6 +375,14 @@ class RingSettings(QWidget):
     def request_delete(self):
         if self.on_delete:
             self.on_delete(self.index)
+    
+    def request_move_up(self):
+        if self.on_move_up:
+            self.on_move_up(self.index)
+    
+    def request_move_down(self):
+        if self.on_move_down:
+            self.on_move_down(self.index)
     
     def update_language(self, language):
         self.title_label.setText(f"{self.tr('ring')} {self.index + 1}")

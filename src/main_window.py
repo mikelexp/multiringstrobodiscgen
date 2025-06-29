@@ -457,7 +457,9 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
             index=index,
             on_delete=self.delete_ring,
             on_change=self.schedule_preview_update,
-            tr_func=self.tr
+            tr_func=self.tr,
+            on_move_up=self.move_ring_up,
+            on_move_down=self.move_ring_down
         )
         self.ring_widgets.append(ring_widget)
         self.rings_layout.addWidget(ring_widget)
@@ -474,11 +476,47 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
             self.rings_layout.removeWidget(widget)
             widget.deleteLater()
             
+        self.update_ring_indices()
+        self.schedule_preview_update()
+    
+    def move_ring_up(self, index):
+        if index > 0 and index < len(self.ring_widgets):
+            # Swap rings in the list
+            self.ring_widgets[index], self.ring_widgets[index - 1] = self.ring_widgets[index - 1], self.ring_widgets[index]
+            
+            # Remove both widgets from layout
+            self.rings_layout.removeWidget(self.ring_widgets[index])
+            self.rings_layout.removeWidget(self.ring_widgets[index - 1])
+            
+            # Re-add them in new order
+            self.rings_layout.insertWidget(index - 1, self.ring_widgets[index - 1])
+            self.rings_layout.insertWidget(index, self.ring_widgets[index])
+            
+            # Update indices and titles
+            self.update_ring_indices()
+            self.schedule_preview_update()
+    
+    def move_ring_down(self, index):
+        if index >= 0 and index < len(self.ring_widgets) - 1:
+            # Swap rings in the list
+            self.ring_widgets[index], self.ring_widgets[index + 1] = self.ring_widgets[index + 1], self.ring_widgets[index]
+            
+            # Remove both widgets from layout
+            self.rings_layout.removeWidget(self.ring_widgets[index])
+            self.rings_layout.removeWidget(self.ring_widgets[index + 1])
+            
+            # Re-add them in new order
+            self.rings_layout.insertWidget(index, self.ring_widgets[index])
+            self.rings_layout.insertWidget(index + 1, self.ring_widgets[index + 1])
+            
+            # Update indices and titles
+            self.update_ring_indices()
+            self.schedule_preview_update()
+    
+    def update_ring_indices(self):
         for i, widget in enumerate(self.ring_widgets):
             widget.index = i
             widget.title_label.setText(f"{widget.tr('ring')} {i + 1}")
-        
-        self.schedule_preview_update()
     
     def generate_disc(self):
         if not self.ring_widgets:
