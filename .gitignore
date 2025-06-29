@@ -1,0 +1,44 @@
+# Build directories
+build/
+dist/
+*.build/
+*.dist/
+*.onefile-build/
+
+# Virtual environment
+venv/
+
+# Compiled binaries
+*.exe
+*.bin
+
+# Temporary files
+*.spec
+
+# Output files (generated discs)
+*.svg
+*.pdf
+
+# Archives
+*.zip
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Future Linux packages
+package_deb
+package_rpm

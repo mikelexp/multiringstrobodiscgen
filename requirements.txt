@@ -1,0 +1,5 @@
+nuitka
+PySide6
+svgwrite
+svglib
+reportlab
