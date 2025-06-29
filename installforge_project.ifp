@@ -51,15 +51,15 @@ Allows = 0
 Number = 1000
 Mask = #####-#####-#####-#####
 [SplashScreen]
-Image = D:\Documents\Proyectos\multiringstrobodiscgen\gfx\splash.png
+Image = C:\Users\mikele\Documents\Proyectos\multiringstrobodiscgen\gfx\splash.png
 Sound = 
 Time = 2
 PlaySound = 0
 Allow = 1
 [Build]
-File = D:\Downloads\multiringstrobodiscgen-setup.exe
-SetupIconPath = D:\Documents\Proyectos\multiringstrobodiscgen\gfx\icon.ico
-UninstallIconPath = D:\Documents\Proyectos\multiringstrobodiscgen\gfx\icon.ico
+File = C:\Users\mikele\Documents\Proyectos\multiringstrobodiscgen\dist\multiringstrobodiscgen-setup-v0.9.3-x86_64.exe
+SetupIconPath = C:\Users\mikele\Documents\Proyectos\multiringstrobodiscgen\gfx\icon.ico
+UninstallIconPath = C:\Users\mikele\Documents\Proyectos\multiringstrobodiscgen\gfx\icon.ico
 CompressionMethod = 0
 CompressionLevel = 2
 [Updater]
@@ -78,16 +78,16 @@ Execdlls = 0
 2
 3
 [Files/Dirs]
-D:\Documents\Proyectos\multiringstrobodiscgen\dist\multiringstrobodiscgen.exe
-31.2 MB
-exe
-D:\Documents\Proyectos\multiringstrobodiscgen\gfx\icon.ico
+C:\Users\mikele\Documents\Proyectos\multiringstrobodiscgen\gfx\icon.ico
 243.3 KB
 ico
+C:\Users\mikele\Documents\Proyectos\multiringstrobodiscgen\dist\multiringstrobodiscgen.exe
+31.1 MB
+exe
 [Licence_Begin]
 23200
 {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil Arial;}}
-{\*\generator Riched20 10.0.26100}\viewkind4\uc1 
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
 \pard\f0\fs20 Attribution-NonCommercial-ShareAlike 4.0 International\par
 \par
 =======================================================================\par
