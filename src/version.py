@@ -4,8 +4,8 @@ Version information for MultiRing Strobo Disc Generator
 Single source of truth for version management
 """
 
-__version__ = "0.9.3"
-__version_info__ = (0, 9, 3)
+__version__ = "0.9.4"
+__version_info__ = (0, 9, 4)
 
 # Build metadata
 __app_name__ = "MultiRing Strobo Disc Generator"

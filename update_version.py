@@ -46,9 +46,8 @@ def update_version(new_version):
     print("Next steps:")
     print("1. Test the application")
     print("2. Build standalone executable: ./build-linux.sh")
-    print("3. Build packages: cd package_rpm && ./build.sh && cd ../package_deb && ./build.sh")
-    print("4. Commit changes: git add . && git commit -m 'Bump version to {}'".format(new_version))
-    print("5. Create git tag: git tag v{}".format(new_version))
+    print("3. Commit changes: git add . && git commit -m 'Bump version to {}'".format(new_version))
+    print("4. Create git tag: git tag v{}".format(new_version))
     
     return True
 
