@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "start.py" | entr -r ./run.sh
+find . -name "*.py" | entr -r ./run.sh
