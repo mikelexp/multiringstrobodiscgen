@@ -1,7 +1,7 @@
 import math
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
-    QSpinBox, QDoubleSpinBox, QComboBox, QCheckBox, QFrame
+    QDoubleSpinBox, QComboBox, QCheckBox, QFrame
 )
 from PySide6.QtCore import Qt
 

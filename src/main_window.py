@@ -1,4 +1,3 @@
-import sys
 import os
 import tempfile
 from PySide6.QtWidgets import (
