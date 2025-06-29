@@ -726,17 +726,38 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
                 # Use manual input
                 ring_widget.rpm_manual_check.setChecked(True)
                 ring_widget.rpm_input.setValue(rpm_value)
-            ring_widget.hz_combo.setCurrentText(str(int(ring_data.get('hz', 50))))
+            # Set frequency radio buttons
+            hz_value = ring_data.get('hz', 60)
+            if hz_value == 50:
+                ring_widget.hz_50_radio.setChecked(True)
+            else:
+                ring_widget.hz_60_radio.setChecked(True)
+            
             ring_widget.depth_input.setValue(ring_data.get('depth', 8))
-            ring_widget.mode_combo.setCurrentIndex(0 if ring_data.get('single_mode', True) else 1)
-            ring_widget.shape_combo.setCurrentIndex(0 if ring_data.get('shape_type', 'lines') == 'lines' else 1)
-            ring_widget.density_combo.setCurrentIndex(0 if ring_data.get('density', 'double') == 'double' else 1)
+            
+            # Set mode radio buttons
+            if ring_data.get('single_mode', True):
+                ring_widget.mode_single_radio.setChecked(True)
+            else:
+                ring_widget.mode_dual_radio.setChecked(True)
+            
+            # Set shape radio buttons
+            if ring_data.get('shape_type', 'lines') == 'lines':
+                ring_widget.shape_lines_radio.setChecked(True)
+            else:
+                ring_widget.shape_dots_radio.setChecked(True)
             
             dot_size_str = f"{ring_data.get('dot_size', 1)}x"
             dot_size_index = ring_widget.dot_size_combo.findText(dot_size_str)
             if dot_size_index >= 0:
                 ring_widget.dot_size_combo.setCurrentIndex(dot_size_index)
         
+            # Set density radio buttons
+            if ring_data.get('density', 'double') == 'double':
+                ring_widget.density_double_radio.setChecked(True)
+            else:
+                ring_widget.density_normal_radio.setChecked(True)
+            
         self.schedule_preview_update()
     
     def save_new_preset(self):

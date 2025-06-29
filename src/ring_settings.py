@@ -1,7 +1,7 @@
 import math
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
-    QDoubleSpinBox, QComboBox, QCheckBox, QFrame
+    QDoubleSpinBox, QComboBox, QCheckBox, QFrame, QRadioButton, QButtonGroup
 )
 from PySide6.QtCore import Qt
 
@@ -146,12 +146,21 @@ class RingSettings(QWidget):
         self.hz_label.setStyleSheet("font-weight: bold; color: #ffffff; background-color: transparent; border: none; margin: 0px; padding: 0px;")
         self.hz_label.setContentsMargins(0, 0, 0, 0)
         
-        self.hz_combo = QComboBox()
-        self.hz_combo.addItems(["50", "60"])
-        self.hz_combo.currentIndexChanged.connect(self.settings_changed)
+        self.hz_50_radio = QRadioButton("50 Hz")
+        self.hz_60_radio = QRadioButton("60 Hz")
+        self.hz_60_radio.setChecked(True)  # Default to 60 Hz
+        
+        self.hz_button_group = QButtonGroup()
+        self.hz_button_group.addButton(self.hz_50_radio, 0)
+        self.hz_button_group.addButton(self.hz_60_radio, 1)
+        self.hz_button_group.idClicked.connect(self.settings_changed)
+        
+        hz_radios_layout = QHBoxLayout()
+        hz_radios_layout.addWidget(self.hz_50_radio)
+        hz_radios_layout.addWidget(self.hz_60_radio)
         
         hz_layout.addWidget(self.hz_label, 1)
-        hz_layout.addWidget(self.hz_combo, 1)
+        hz_layout.addLayout(hz_radios_layout, 1)
         frame_layout.addLayout(hz_layout)
         
         # Ring depth
@@ -171,20 +180,28 @@ class RingSettings(QWidget):
         depth_layout.addWidget(self.depth_input, 1)
         frame_layout.addLayout(depth_layout)
         
-        # Single mode checkbox
+        # Mode options
         mode_layout = QHBoxLayout()
         mode_layout.setSpacing(10)
-        self.mode_label = QLabel(self.tr('mode_options'))
+        self.mode_label = QLabel(self.tr('ring_mode'))
         self.mode_label.setStyleSheet("font-weight: bold; color: #ffffff; background-color: transparent; border: none; margin: 0px; padding: 0px;")
         self.mode_label.setContentsMargins(0, 0, 0, 0)
         
-        self.mode_combo = QComboBox()
-        self.mode_combo.addItems([self.tr('single_ring'), self.tr('dual_rings')])
-        self.mode_combo.setCurrentIndex(0)
-        self.mode_combo.currentIndexChanged.connect(self.settings_changed)
+        self.mode_single_radio = QRadioButton(self.tr('single_ring'))
+        self.mode_dual_radio = QRadioButton(self.tr('dual_rings'))
+        self.mode_single_radio.setChecked(True)  # Default to single ring
+        
+        self.mode_button_group = QButtonGroup()
+        self.mode_button_group.addButton(self.mode_single_radio, 0)
+        self.mode_button_group.addButton(self.mode_dual_radio, 1)
+        self.mode_button_group.idClicked.connect(self.settings_changed)
+        
+        mode_radios_layout = QHBoxLayout()
+        mode_radios_layout.addWidget(self.mode_single_radio)
+        mode_radios_layout.addWidget(self.mode_dual_radio)
         
         mode_layout.addWidget(self.mode_label, 1)
-        mode_layout.addWidget(self.mode_combo, 1)
+        mode_layout.addLayout(mode_radios_layout, 1)
         frame_layout.addLayout(mode_layout)
         
         # Shape type
@@ -194,34 +211,27 @@ class RingSettings(QWidget):
         self.shape_label.setStyleSheet("font-weight: bold; color: #ffffff; background-color: transparent; border: none; margin: 0px; padding: 0px;")
         self.shape_label.setContentsMargins(0, 0, 0, 0)
         
-        self.shape_combo = QComboBox()
-        self.shape_combo.addItems([self.tr('lines'), self.tr('dots')])
-        self.shape_combo.setCurrentIndex(0)
-        self.shape_combo.currentIndexChanged.connect(self.settings_changed)
+        self.shape_lines_radio = QRadioButton(self.tr('lines'))
+        self.shape_dots_radio = QRadioButton(self.tr('dots'))
+        self.shape_lines_radio.setChecked(True)  # Default to lines
+        
+        self.shape_button_group = QButtonGroup()
+        self.shape_button_group.addButton(self.shape_lines_radio, 0)
+        self.shape_button_group.addButton(self.shape_dots_radio, 1)
+        self.shape_button_group.idClicked.connect(self.settings_changed)
+        self.shape_button_group.idClicked.connect(self.update_dot_size_visibility)
+        
+        shape_radios_layout = QHBoxLayout()
+        shape_radios_layout.addWidget(self.shape_lines_radio)
+        shape_radios_layout.addWidget(self.shape_dots_radio)
         
         shape_layout.addWidget(self.shape_label, 1)
-        shape_layout.addWidget(self.shape_combo, 1)
+        shape_layout.addLayout(shape_radios_layout, 1)
         frame_layout.addLayout(shape_layout)
         
-        # Density type
-        density_layout = QHBoxLayout()
-        density_layout.setSpacing(10)
-        self.density_label = QLabel(self.tr('density'))
-        self.density_label.setStyleSheet("font-weight: bold; color: #ffffff; background-color: transparent; border: none; margin: 0px; padding: 0px;")
-        self.density_label.setContentsMargins(0, 0, 0, 0)
-        
-        self.density_combo = QComboBox()
-        self.density_combo.addItems([self.tr('double'), self.tr('normal')])
-        self.density_combo.setCurrentIndex(0)
-        self.density_combo.currentIndexChanged.connect(self.settings_changed)
-        
-        density_layout.addWidget(self.density_label, 1)
-        density_layout.addWidget(self.density_combo, 1)
-        frame_layout.addLayout(density_layout)
-        
         # Dot size
-        dot_size_layout = QHBoxLayout()
-        dot_size_layout.setSpacing(10)
+        self.dot_size_layout = QHBoxLayout()
+        self.dot_size_layout.setSpacing(10)
         self.dot_size_label = QLabel(self.tr('dot_size'))
         self.dot_size_label.setStyleSheet("font-weight: bold; color: #ffffff; background-color: transparent; border: none; margin: 0px; padding: 0px;")
         self.dot_size_label.setContentsMargins(0, 0, 0, 0)
@@ -231,9 +241,33 @@ class RingSettings(QWidget):
         self.dot_size_combo.setCurrentIndex(2)
         self.dot_size_combo.currentIndexChanged.connect(self.settings_changed)
         
-        dot_size_layout.addWidget(self.dot_size_label, 1)
-        dot_size_layout.addWidget(self.dot_size_combo, 1)
-        frame_layout.addLayout(dot_size_layout)
+        self.dot_size_layout.addWidget(self.dot_size_label, 1)
+        self.dot_size_layout.addWidget(self.dot_size_combo, 1)
+        frame_layout.addLayout(self.dot_size_layout)
+        
+        # Density type
+        density_layout = QHBoxLayout()
+        density_layout.setSpacing(10)
+        self.density_label = QLabel(self.tr('density'))
+        self.density_label.setStyleSheet("font-weight: bold; color: #ffffff; background-color: transparent; border: none; margin: 0px; padding: 0px;")
+        self.density_label.setContentsMargins(0, 0, 0, 0)
+        
+        self.density_double_radio = QRadioButton(self.tr('double'))
+        self.density_normal_radio = QRadioButton(self.tr('normal'))
+        self.density_double_radio.setChecked(True)  # Default to double density
+        
+        self.density_button_group = QButtonGroup()
+        self.density_button_group.addButton(self.density_double_radio, 0)
+        self.density_button_group.addButton(self.density_normal_radio, 1)
+        self.density_button_group.idClicked.connect(self.settings_changed)
+        
+        density_radios_layout = QHBoxLayout()
+        density_radios_layout.addWidget(self.density_double_radio)
+        density_radios_layout.addWidget(self.density_normal_radio)
+        
+        density_layout.addWidget(self.density_label, 1)
+        density_layout.addLayout(density_radios_layout, 1)
+        frame_layout.addLayout(density_layout)
         
         # Information layout with title and content
         info_layout = QVBoxLayout()
@@ -281,6 +315,7 @@ class RingSettings(QWidget):
         main_layout.addLayout(frame_layout)
         
         self.update_segments_info()
+        self.update_dot_size_visibility()
     
     def toggle_rpm_input(self, state):
         is_checked = state == Qt.CheckState.Checked.value
@@ -299,13 +334,13 @@ class RingSettings(QWidget):
                 return float(rpm_text)
     
     def get_hz_value(self):
-        return float(self.hz_combo.currentText())
+        return 50.0 if self.hz_50_radio.isChecked() else 60.0
     
     def get_depth_value(self):
         return self.depth_input.value()
     
     def lines_to_rpm(self, num_lines, frequency):
-        density_factor = 2 if self.density_combo.currentIndex() == 0 else 1
+        density_factor = 2 if self.density_double_radio.isChecked() else 1
         rpm = (60 * frequency * density_factor) / num_lines
         return round(rpm, 3)
     
@@ -313,7 +348,7 @@ class RingSettings(QWidget):
         rpm = self.get_rpm_value()
         hz = self.get_hz_value()
         
-        density_factor = 2 if self.density_combo.currentIndex() == 0 else 1
+        density_factor = 2 if self.density_double_radio.isChecked() else 1
         num_lines_exact = (60 * hz) / rpm * density_factor
         
         num_lines_floor = math.floor(num_lines_exact)
@@ -323,7 +358,7 @@ class RingSettings(QWidget):
         
         num_lines_rpm = 0
         
-        if num_lines_floor == num_lines_ceil or self.mode_combo.currentIndex() == 0:
+        if num_lines_floor == num_lines_ceil or self.mode_single_radio.isChecked():
             if (num_lines_floor == num_lines_ceil):
                 num_lines = num_lines_floor
             else:
@@ -345,7 +380,7 @@ class RingSettings(QWidget):
         (num_lines_exact, num_lines, num_lines_rpm, line_width,
          num_lines_floor, num_lines_ceil, num_lines_floor_rpm, num_lines_ceil_rpm) = self.calculate_segments_and_line_width(radius)
         
-        if num_lines_floor == num_lines_ceil or self.mode_combo.currentIndex() == 0:
+        if num_lines_floor == num_lines_ceil or self.mode_single_radio.isChecked():
             segments_text = f"{self.tr('number_of_segments')}: {num_lines}"
             details_text = [
                 f"{self.tr('ideal')}: {round(num_lines_exact, 3)} {self.tr('lines_text')}",
@@ -384,44 +419,34 @@ class RingSettings(QWidget):
         if self.on_move_down:
             self.on_move_down(self.index)
     
+    def update_dot_size_visibility(self):
+        is_dots = self.shape_dots_radio.isChecked()
+        self.dot_size_label.setVisible(is_dots)
+        self.dot_size_combo.setVisible(is_dots)
+    
     def update_language(self, language):
         self.title_label.setText(f"{self.tr('ring')} {self.index + 1}")
         
         self.rpm_label.setText(self.tr('rpm_selection'))
         self.hz_label.setText(self.tr('frequency_hz'))
         self.depth_label.setText(self.tr('ring_depth'))
-        self.mode_label.setText(self.tr('mode_options'))
+        self.mode_label.setText(self.tr('ring_mode'))
         self.shape_label.setText(self.tr('shape_type'))
-        self.density_label.setText(self.tr('density'))
         self.dot_size_label.setText(self.tr('dot_size'))
+        self.density_label.setText(self.tr('density'))
         self.info_title_label.setText(self.tr('ring_information'))
         
         self.rpm_manual_check.setText(self.tr('enter_rpm_manually'))
         
-        current_mode = self.mode_combo.currentIndex()
-        current_shape = self.shape_combo.currentIndex()
-        current_density = self.density_combo.currentIndex()
+        # Update radio button texts
+        self.mode_single_radio.setText(self.tr('single_ring'))
+        self.mode_dual_radio.setText(self.tr('dual_rings'))
         
-        self.mode_combo.blockSignals(True)
-        self.mode_combo.clear()
-        self.mode_combo.addItems([self.tr('single_ring'), self.tr('dual_rings')])
-        self.mode_combo.setCurrentIndex(current_mode)
-        self.mode_combo.currentIndexChanged.connect(self.settings_changed)
-        self.mode_combo.blockSignals(False)
+        self.shape_lines_radio.setText(self.tr('lines'))
+        self.shape_dots_radio.setText(self.tr('dots'))
         
-        self.shape_combo.blockSignals(True)
-        self.shape_combo.clear()
-        self.shape_combo.addItems([self.tr('lines'), self.tr('dots')])
-        self.shape_combo.setCurrentIndex(current_shape)
-        self.shape_combo.currentIndexChanged.connect(self.settings_changed)
-        self.shape_combo.blockSignals(False)
-        
-        self.density_combo.blockSignals(True)
-        self.density_combo.clear()
-        self.density_combo.addItems([self.tr('double'), self.tr('normal')])
-        self.density_combo.setCurrentIndex(current_density)
-        self.density_combo.currentIndexChanged.connect(self.settings_changed)
-        self.density_combo.blockSignals(False)
+        self.density_double_radio.setText(self.tr('double'))
+        self.density_normal_radio.setText(self.tr('normal'))
         
         self.update_segments_info()
     
@@ -430,8 +455,8 @@ class RingSettings(QWidget):
             'rpm': self.get_rpm_value(),
             'hz': self.get_hz_value(),
             'depth': self.get_depth_value(),
-            'single_mode': self.mode_combo.currentIndex() == 0,
-            'shape_type': 'lines' if self.shape_combo.currentIndex() == 0 else 'dots',
-            'density': 'double' if self.density_combo.currentIndex() == 0 else 'normal',
-            'dot_size': float(self.dot_size_combo.currentText().replace('x', ''))
+            'single_mode': self.mode_single_radio.isChecked(),
+            'shape_type': 'lines' if self.shape_lines_radio.isChecked() else 'dots',
+            'dot_size': float(self.dot_size_combo.currentText().replace('x', '')),
+            'density': 'double' if self.density_double_radio.isChecked() else 'normal'
         }
