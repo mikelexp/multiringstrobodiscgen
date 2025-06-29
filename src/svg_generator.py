@@ -58,7 +58,7 @@ class SVGGenerator:
             }
     
     def generate_disc(self, diameter, spindle_diameter, outer_circle_width, 
-                     ring_separation, ring_widgets):
+                     ring_separation, ring_widgets, disc_text=None):
         self.temp_svg_file = tempfile.NamedTemporaryFile(suffix=".svg", delete=False)
         self.temp_svg_file.close()
         
@@ -113,6 +113,10 @@ class SVGGenerator:
             stroke='black', 
             stroke_width=0.2
         ))
+        
+        # Draw text positioning
+        if disc_text:
+            self._draw_disc_text(dwg, center, diameter, spindle_diameter, disc_text)
         
         dwg.save()
         return self.temp_svg_file.name
@@ -203,3 +207,41 @@ class SVGGenerator:
                 dot_radius = (inner_line_width / 2) * dot_size
                 
                 dwg.add(dwg.circle(center=(dot_x, dot_y), r=dot_radius, fill='black'))
+    
+    def _draw_disc_text(self, dwg, center, diameter, spindle_diameter, disc_text):
+        """Draw text at specified positions relative to the spindle center"""
+        center_x, center_y = center
+        
+        # Font size is fixed regardless of disc size
+        font_size = 1.5  # Fixed font size in mm (reduced to half)
+        
+        # Top text: centered above spindle, grows upward (lines reversed for proper visual order)
+        if disc_text.get('top', '').strip():
+            lines = disc_text['top'].strip().split('\n')
+            lines = [line for line in lines if line.strip()]  # Filter empty lines
+            lines.reverse()  # Reverse order so first line appears closest to spindle
+            for i, line in enumerate(lines):
+                text_y = center_y - (spindle_diameter/2) - (font_size * 3.0) - (i * font_size * 3.5)
+                dwg.add(dwg.text(
+                    line, 
+                    insert=(center_x, text_y),
+                    text_anchor="middle",
+                    font_size=f"{font_size}mm",
+                    font_family="Arial,sans-serif",
+                    fill="black"
+                ))
+        
+        # Bottom text: centered below spindle, grows downward
+        if disc_text.get('bottom', '').strip():
+            lines = disc_text['bottom'].strip().split('\n')
+            for i, line in enumerate(lines):
+                if line.strip():
+                    text_y = center_y + (spindle_diameter/2) + (font_size * 6.0) + (i * font_size * 3.5)
+                    dwg.add(dwg.text(
+                        line, 
+                        insert=(center_x, text_y),
+                        text_anchor="middle",
+                        font_size=f"{font_size}mm",
+                        font_family="Arial,sans-serif",
+                        fill="black"
+                    ))

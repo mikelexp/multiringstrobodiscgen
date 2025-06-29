@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, 
     QScrollArea, QSpinBox, QDoubleSpinBox, QFileDialog, QComboBox, 
     QMessageBox, QTabWidget, QApplication, QInputDialog, QListWidget, 
-    QListWidgetItem
+    QListWidgetItem, QTextEdit
 )
 from PySide6.QtCore import Qt, QSize, QTimer
 from PySide6.QtSvgWidgets import QSvgWidget
@@ -203,6 +203,17 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         params_layout.setSpacing(15)
         params_layout.setContentsMargins(20, 20, 20, 20)
         
+        # Language selector
+        language_layout = QHBoxLayout()
+        self.language_label = QLabel(self.tr('language'))
+        self.language_combo = QComboBox()
+        self.language_combo.addItems([self.tr('english'), self.tr('spanish')])
+        self.language_combo.setCurrentIndex(0 if self.current_language == 'en' else 1)
+        self.language_combo.currentIndexChanged.connect(self.change_language)
+        language_layout.addWidget(self.language_label)
+        language_layout.addWidget(self.language_combo)
+        params_layout.addLayout(language_layout)
+        
         self.measurements_title = QLabel(self.tr('measurements_mm'))
         self.measurements_title.setStyleSheet("font-weight: bold; font-size: 14px; color: #ffffff; margin: 0px; padding: 0px; border: none; background: transparent;")
         self.measurements_title.setContentsMargins(0, 0, 0, 0)
@@ -257,16 +268,33 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         ring_separation_layout.addWidget(self.ring_separation_input)
         params_layout.addLayout(ring_separation_layout)
         
-        # Language selector
-        language_layout = QHBoxLayout()
-        self.language_label = QLabel(self.tr('language'))
-        self.language_combo = QComboBox()
-        self.language_combo.addItems([self.tr('english'), self.tr('spanish')])
-        self.language_combo.setCurrentIndex(0 if self.current_language == 'en' else 1)
-        self.language_combo.currentIndexChanged.connect(self.change_language)
-        language_layout.addWidget(self.language_label)
-        language_layout.addWidget(self.language_combo)
-        params_layout.addLayout(language_layout)
+        # Text positioning section
+        self.disc_text_title = QLabel(self.tr('disc_text'))
+        self.disc_text_title.setStyleSheet("font-weight: bold; font-size: 14px; color: #ffffff; margin: 15px 0px 10px 0px; padding: 0px; border: none; background: transparent;")
+        self.disc_text_title.setContentsMargins(0, 0, 0, 0)
+        params_layout.addWidget(self.disc_text_title)
+        
+        # Top text
+        top_text_layout = QVBoxLayout()
+        self.top_text_label = QLabel(self.tr('text_top'))
+        self.top_text_input = QTextEdit()
+        self.top_text_input.setMaximumHeight(120)  # Double height (60 -> 120)
+        self.top_text_input.textChanged.connect(self.schedule_preview_update)
+        self.top_text_input.setTabChangesFocus(True)  # Tab moves to next widget instead of inserting tab
+        top_text_layout.addWidget(self.top_text_label)
+        top_text_layout.addWidget(self.top_text_input)
+        params_layout.addLayout(top_text_layout)
+        
+        # Bottom text
+        bottom_text_layout = QVBoxLayout()
+        self.bottom_text_label = QLabel(self.tr('text_bottom'))
+        self.bottom_text_input = QTextEdit()
+        self.bottom_text_input.setMaximumHeight(120)  # Double height (60 -> 120)
+        self.bottom_text_input.textChanged.connect(self.schedule_preview_update)
+        self.bottom_text_input.setTabChangesFocus(True)  # Tab moves to next widget instead of inserting tab
+        bottom_text_layout.addWidget(self.bottom_text_label)
+        bottom_text_layout.addWidget(self.bottom_text_input)
+        params_layout.addLayout(bottom_text_layout)
         
         params_layout.addStretch()
         
@@ -462,9 +490,15 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         outer_circle_width = self.outer_circle_width_input.value()
         ring_separation = self.ring_separation_input.value()
         
+        # Get text positioning values
+        disc_text = {
+            'top': self.top_text_input.toPlainText(),
+            'bottom': self.bottom_text_input.toPlainText()
+        }
+        
         svg_file = self.svg_generator.generate_disc(
             diameter, spindle_diameter, outer_circle_width, 
-            ring_separation, self.ring_widgets
+            ring_separation, self.ring_widgets, disc_text
         )
         
         self.temp_svg_file = type('TempFile', (), {'name': svg_file})()
@@ -582,6 +616,14 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         if hasattr(self, 'language_label'):
             self.language_label.setText(self.tr('language'))
         
+        # Text positioning labels
+        if hasattr(self, 'disc_text_title'):
+            self.disc_text_title.setText(self.tr('disc_text'))
+        if hasattr(self, 'top_text_label'):
+            self.top_text_label.setText(self.tr('text_top'))
+        if hasattr(self, 'bottom_text_label'):
+            self.bottom_text_label.setText(self.tr('text_bottom'))
+        
         if hasattr(self, 'export_format_label'):
             self.export_format_label.setText(self.tr('export_format'))
         if hasattr(self, 'page_size_label'):
@@ -616,7 +658,9 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
             'diameter': self.diameter_input.value(),
             'spindle_diameter': self.spindle_diameter_input.value(),
             'outer_circle_width': self.outer_circle_width_input.value(),
-            'ring_separation': self.ring_separation_input.value()
+            'ring_separation': self.ring_separation_input.value(),
+            'text_top': self.top_text_input.toPlainText(),
+            'text_bottom': self.bottom_text_input.toPlainText()
         }
     
     def load_preset_data(self, preset_data):
@@ -630,6 +674,10 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         self.spindle_diameter_input.setValue(preset_data.get('spindle_diameter', 7.0))
         self.outer_circle_width_input.setValue(preset_data.get('outer_circle_width', 1.0))
         self.ring_separation_input.setValue(preset_data.get('ring_separation', 1.0))
+        
+        # Load text positioning values
+        self.top_text_input.setPlainText(preset_data.get('text_top', ''))
+        self.bottom_text_input.setPlainText(preset_data.get('text_bottom', ''))
         
         for ring_data in preset_data.get('rings', []):
             self.add_ring()

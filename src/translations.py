@@ -5,7 +5,7 @@ TRANSLATIONS = {
     'en': {
         'app_title': get_full_title(),
         'rings_tab': 'Rings',
-        'config_tab': 'Config',
+        'config_tab': 'Options',
         'export_tab': 'Export',
         'ring': 'Ring',
         'remove': 'remove',
@@ -72,12 +72,17 @@ TRANSLATIONS = {
         'preset_deleted': 'Preset deleted successfully',
         'preset_renamed': 'Preset renamed successfully',
         'confirm_delete': 'Are you sure you want to delete this preset?',
-        'enter_new_name': 'Enter new name:'
+        'enter_new_name': 'Enter new name:',
+        'disc_text': 'Disc text',
+        'text_top': 'Top text:',
+        'text_right': 'Right text:',
+        'text_bottom': 'Bottom text:',
+        'text_left': 'Left text:'
     },
     'es': {
         'app_title': get_full_title(),
         'rings_tab': 'Anillos',
-        'config_tab': 'Config',
+        'config_tab': 'Opciones',
         'export_tab': 'Exportar',
         'ring': 'Anillo',
         'remove': 'eliminar',
@@ -144,6 +149,11 @@ TRANSLATIONS = {
         'preset_deleted': 'Preset eliminado exitosamente',
         'preset_renamed': 'Preset renombrado exitosamente',
         'confirm_delete': '¿Está seguro que desea eliminar este preset?',
-        'enter_new_name': 'Ingrese nuevo nombre:'
+        'enter_new_name': 'Ingrese nuevo nombre:',
+        'disc_text': 'Texto del disco',
+        'text_top': 'Texto superior:',
+        'text_right': 'Texto derecho:',
+        'text_bottom': 'Texto inferior:',
+        'text_left': 'Texto izquierdo:'
     }
 }
