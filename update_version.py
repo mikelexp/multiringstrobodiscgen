@@ -34,6 +34,14 @@ def update_version(new_version):
     version_file.write_text(content)
     print(f"✓ Updated version.py to {new_version}")
     
+    # Update installforge_project.ifp
+    ifp_file = Path('installforge_project.ifp')
+    if ifp_file.exists():
+        ifp_content = ifp_file.read_text(encoding='utf-8')
+        ifp_content = re.sub(r'Program version = .*', f'Program version = {new_version}', ifp_content)
+        ifp_file.write_text(ifp_content, encoding='utf-8', newline='\r\n')
+        print(f"✓ Updated installforge_project.ifp to {new_version}")
+    
     print(f"\n🎉 Version updated to {new_version}")
     print("Next steps:")
     print("1. Test the application: ./run.sh (Linux) or python3 start.py (Windows)")
