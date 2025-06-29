@@ -115,6 +115,8 @@ Available formats:
 
 ## Building from Source
 
+**Note**: Generated executable files include the version and platform architecture in their filename (e.g., `multiringstrobodiscgen-v1.0.0-x86_64.bin` for Linux, `multiringstrobodiscgen-v1.0.0-x86_64.exe` for Windows).
+
 ### 1. Clone the Repository
 ```bash
 git clone <repository-url>
