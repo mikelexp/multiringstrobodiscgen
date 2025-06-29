@@ -34,20 +34,13 @@ def update_version(new_version):
     version_file.write_text(content)
     print(f"✓ Updated version.py to {new_version}")
     
-    # Update README.md if needed (optional)
-    readme_file = Path('README.md')
-    if readme_file.exists():
-        readme_content = readme_file.read_text()
-        # Update any version references in README if they exist
-        # This is optional and depends on your README structure
-        print("✓ README.md checked")
-    
     print(f"\n🎉 Version updated to {new_version}")
     print("Next steps:")
-    print("1. Test the application")
-    print("2. Build standalone executable: ./build-linux.sh")
+    print("1. Test the application: ./run.sh (Linux) or python3 start.py (Windows)")
+    print("2. Build standalone executable: ./build-linux.sh (Linux) or build-windows.ps1 (Windows)")
     print("3. Commit changes: git add . && git commit -m 'Bump version to {}'".format(new_version))
     print("4. Create git tag: git tag v{}".format(new_version))
+    print("5. Push new tag: git push --tags")
     
     return True
 
