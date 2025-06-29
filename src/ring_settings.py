@@ -37,13 +37,13 @@ class RingSettings(QWidget):
         self.title_label.setContentsMargins(0, 0, 0, 0)
         
         # Move up button
-        move_up_button = QPushButton("↑")
+        move_up_button = QPushButton("▲")
         move_up_button.setStyleSheet("""
             QPushButton {
                 background-color: transparent;
                 border: none;
                 color: #ffffff;
-                font-size: 16px;
+                font-size: 14px;
                 font-weight: bold;
                 padding: 2px 4px;
                 margin: 0px;
@@ -58,13 +58,13 @@ class RingSettings(QWidget):
         move_up_button.clicked.connect(self.request_move_up)
         
         # Move down button
-        move_down_button = QPushButton("↓")
+        move_down_button = QPushButton("▼")
         move_down_button.setStyleSheet("""
             QPushButton {
                 background-color: transparent;
                 border: none;
                 color: #ffffff;
-                font-size: 16px;
+                font-size: 14px;
                 font-weight: bold;
                 padding: 2px 4px;
                 margin: 0px;
@@ -114,6 +114,7 @@ class RingSettings(QWidget):
         self.rpm_combo = QComboBox()
         self.rpm_combo.addItems(["16", "33⅓", "45", "78"])
         self.rpm_combo.setCurrentIndex(1)
+        self.rpm_combo.setStyleSheet("QComboBox:disabled { color: gray; }")
         self.rpm_combo.currentIndexChanged.connect(self.settings_changed)
         
         rpm_layout.addWidget(self.rpm_label, 1)
@@ -124,7 +125,30 @@ class RingSettings(QWidget):
         manual_layout = QHBoxLayout()
         manual_layout.setSpacing(10)
         self.rpm_manual_check = QCheckBox(self.tr('enter_rpm_manually'))
-        self.rpm_manual_check.setStyleSheet("font-weight: 500; color: #cccccc; background-color: transparent; border: none;")
+        self.rpm_manual_check.setStyleSheet("""
+            QCheckBox {
+                font-weight: 500; 
+                color: #cccccc; 
+                background-color: transparent; 
+                border: none;
+                spacing: 8px;
+            }
+            QCheckBox::indicator {
+                width: 16px;
+                height: 16px;
+                border: 2px solid #666666;
+                background-color: #2d2d2d;
+                border-radius: 3px;
+            }
+            QCheckBox::indicator:checked {
+                background-color: #569CD6;
+                border-color: #569CD6;
+                image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwIDNMNC41IDguNUwyIDYiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+);
+            }
+            QCheckBox::indicator:hover {
+                border-color: #999999;
+            }
+        """)
         self.rpm_manual_check.stateChanged.connect(self.toggle_rpm_input)
         self.rpm_manual_check.stateChanged.connect(self.settings_changed)
         
@@ -133,6 +157,7 @@ class RingSettings(QWidget):
         self.rpm_input.setValue(33.33)
         self.rpm_input.setDecimals(2)
         self.rpm_input.setEnabled(False)
+        self.rpm_input.setVisible(False)
         self.rpm_input.valueChanged.connect(self.settings_changed)
         
         manual_layout.addWidget(self.rpm_manual_check, 1)
@@ -149,6 +174,31 @@ class RingSettings(QWidget):
         self.hz_50_radio = QRadioButton("50 Hz")
         self.hz_60_radio = QRadioButton("60 Hz")
         self.hz_60_radio.setChecked(True)  # Default to 60 Hz
+        
+        radio_style = """
+            QRadioButton {
+                color: #cccccc;
+                font-weight: 500;
+                spacing: 10px;
+            }
+            QRadioButton::indicator {
+                width: 14px;
+                height: 14px;
+                border: 2px solid #666666;
+                background-color: #2d2d2d;
+                border-radius: 7px;
+            }
+            QRadioButton::indicator:checked {
+                background-color: #569CD6;
+                border-color: #569CD6;
+            }
+            QRadioButton::indicator:hover {
+                border-color: #999999;
+            }
+        """
+        
+        self.hz_50_radio.setStyleSheet(radio_style)
+        self.hz_60_radio.setStyleSheet(radio_style)
         
         self.hz_button_group = QButtonGroup()
         self.hz_button_group.addButton(self.hz_50_radio, 0)
@@ -191,6 +241,9 @@ class RingSettings(QWidget):
         self.mode_dual_radio = QRadioButton(self.tr('dual_rings'))
         self.mode_single_radio.setChecked(True)  # Default to single ring
         
+        self.mode_single_radio.setStyleSheet(radio_style)
+        self.mode_dual_radio.setStyleSheet(radio_style)
+        
         self.mode_button_group = QButtonGroup()
         self.mode_button_group.addButton(self.mode_single_radio, 0)
         self.mode_button_group.addButton(self.mode_dual_radio, 1)
@@ -214,6 +267,9 @@ class RingSettings(QWidget):
         self.shape_lines_radio = QRadioButton(self.tr('lines'))
         self.shape_dots_radio = QRadioButton(self.tr('dots'))
         self.shape_lines_radio.setChecked(True)  # Default to lines
+        
+        self.shape_lines_radio.setStyleSheet(radio_style)
+        self.shape_dots_radio.setStyleSheet(radio_style)
         
         self.shape_button_group = QButtonGroup()
         self.shape_button_group.addButton(self.shape_lines_radio, 0)
@@ -255,6 +311,9 @@ class RingSettings(QWidget):
         self.density_double_radio = QRadioButton(self.tr('double'))
         self.density_normal_radio = QRadioButton(self.tr('normal'))
         self.density_double_radio.setChecked(True)  # Default to double density
+        
+        self.density_double_radio.setStyleSheet(radio_style)
+        self.density_normal_radio.setStyleSheet(radio_style)
         
         self.density_button_group = QButtonGroup()
         self.density_button_group.addButton(self.density_double_radio, 0)
@@ -319,7 +378,17 @@ class RingSettings(QWidget):
     
     def toggle_rpm_input(self, state):
         is_checked = state == Qt.CheckState.Checked.value
+        
+        if is_checked:
+            # When enabling manual input, set it to current dropdown value
+            rpm_text = self.rpm_combo.currentText()
+            if rpm_text == "33⅓":
+                self.rpm_input.setValue(33.33)
+            else:
+                self.rpm_input.setValue(float(rpm_text))
+        
         self.rpm_input.setEnabled(is_checked)
+        self.rpm_input.setVisible(is_checked)
         self.rpm_combo.setEnabled(not is_checked)
         self.update_segments_info()
     

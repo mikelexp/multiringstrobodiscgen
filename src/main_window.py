@@ -4,7 +4,7 @@ from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, 
     QScrollArea, QSpinBox, QDoubleSpinBox, QFileDialog, QComboBox, 
     QMessageBox, QTabWidget, QApplication, QInputDialog, QListWidget, 
-    QListWidgetItem, QTextEdit
+    QListWidgetItem, QTextEdit, QRadioButton, QButtonGroup
 )
 from PySide6.QtCore import Qt, QSize, QTimer
 from PySide6.QtSvgWidgets import QSvgWidget
@@ -307,15 +307,59 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         # Export format
         export_format_layout = QHBoxLayout()
         self.export_format_label = QLabel(self.tr('export_format'))
-        self.format_combo = QComboBox()
-        if PDF_AVAILABLE:
-            self.format_combo.addItems(["SVG", "PDF"])
-        else:
-            self.format_combo.addItems(["SVG"])
-        self.format_combo.setCurrentIndex(0)
+        
+        self.svg_radio = QRadioButton("SVG")
+        self.pdf_radio = QRadioButton("PDF")
+        self.svg_radio.setChecked(True)  # Default to SVG
+        
+        # Disable PDF if not available
+        if not PDF_AVAILABLE:
+            self.pdf_radio.setEnabled(False)
+            self.pdf_radio.setToolTip("PDF export requires additional libraries")
+        
+        radio_style = """
+            QRadioButton {
+                color: #cccccc;
+                font-weight: 500;
+                spacing: 10px;
+            }
+            QRadioButton::indicator {
+                width: 14px;
+                height: 14px;
+                border: 2px solid #666666;
+                background-color: #2d2d2d;
+                border-radius: 7px;
+            }
+            QRadioButton::indicator:checked {
+                background-color: #569CD6;
+                border-color: #569CD6;
+            }
+            QRadioButton::indicator:hover {
+                border-color: #999999;
+            }
+            QRadioButton:disabled {
+                color: #666666;
+            }
+            QRadioButton::indicator:disabled {
+                border-color: #444444;
+                background-color: #1e1e1e;
+            }
+        """
+        
+        self.svg_radio.setStyleSheet(radio_style)
+        self.pdf_radio.setStyleSheet(radio_style)
+        
+        self.format_button_group = QButtonGroup()
+        self.format_button_group.addButton(self.svg_radio, 0)
+        self.format_button_group.addButton(self.pdf_radio, 1)
+        self.format_button_group.idClicked.connect(self.update_page_size_visibility)
+        
+        format_radios_layout = QHBoxLayout()
+        format_radios_layout.addWidget(self.svg_radio)
+        format_radios_layout.addWidget(self.pdf_radio)
         
         export_format_layout.addWidget(self.export_format_label)
-        export_format_layout.addWidget(self.format_combo)
+        export_format_layout.addLayout(format_radios_layout)
         export_tab_layout.addLayout(export_format_layout)
         
         # Paper format selection (for PDF export)
@@ -331,7 +375,8 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         self.page_size_layout.addWidget(self.page_size_combo)
         export_tab_layout.addLayout(self.page_size_layout)
         
-        self.format_combo.currentTextChanged.connect(lambda text: self.page_size_combo.setEnabled(text == "PDF" and PDF_AVAILABLE))
+        # Initialize page size visibility
+        self.update_page_size_visibility()
         
         self.export_button = QPushButton(self.tr('export'))
         self.apply_font_to_widget(self.export_button, 1)
@@ -511,6 +556,11 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
             widget.index = i
             widget.title_label.setText(f"{widget.tr('ring')} {i + 1}")
     
+    def update_page_size_visibility(self):
+        """Update page size combo visibility based on export format selection"""
+        is_pdf_selected = self.pdf_radio.isChecked() and PDF_AVAILABLE
+        self.page_size_combo.setEnabled(is_pdf_selected)
+    
     def generate_disc(self):
         if not self.ring_widgets:
             QMessageBox.warning(self, self.tr('warning'), self.tr('add_at_least_one_ring'))
@@ -543,10 +593,10 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
                 QMessageBox.warning(self, self.tr('error'), self.tr('no_disc_to_export'))
                 return
         
-            if self.format_combo.currentText() == "SVG":
+            if self.svg_radio.isChecked():
                 file_filter = "SVG Files (*.svg)"
                 default_ext = ".svg"
-            elif self.format_combo.currentText() == "PDF" and PDF_AVAILABLE:
+            elif self.pdf_radio.isChecked() and PDF_AVAILABLE:
                 file_filter = "PDF Files (*.pdf)"
                 default_ext = ".pdf"
             else:
@@ -571,10 +621,10 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
                 if reply == QMessageBox.StandardButton.No:
                     return
         
-            if self.format_combo.currentText() == "SVG":
+            if self.svg_radio.isChecked():
                 with open(self.temp_svg_file.name, 'r') as src, open(file_path, 'w') as dst:
                     dst.write(src.read())
-            elif self.format_combo.currentText() == "PDF" and PDF_AVAILABLE:
+            elif self.pdf_radio.isChecked() and PDF_AVAILABLE:
                 drawing = svg2rlg(self.temp_svg_file.name)
                 
                 disc_diameter_mm = self.diameter_input.value()
@@ -790,23 +840,23 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
             buttons_layout.setSpacing(3)
             buttons_layout.addStretch()
             
-            load_button = QPushButton("⭳")
+            load_button = QPushButton("📂")
             load_button.setToolTip(self.tr('load'))
             load_button.setStyleSheet("""
                 QPushButton {
-                    background-color: #569cd6;
+                    background-color: #3c6d96;
                     color: white;
                     border: none;
                     padding: 4px;
                     border-radius: 2px;
-                    font-size: 10px;
-                    min-width: 15px;
-                    min-height: 15px;
-                    max-width: 15px;
-                    max-height: 15px;
+                    font-size: 12px;
+                    min-width: 18px;
+                    min-height: 18px;
+                    max-width: 18px;
+                    max-height: 18px;
                 }
                 QPushButton:hover {
-                    background-color: #6aa4d8;
+                    background-color: #4a7397;
                 }
             """)
             load_button.clicked.connect(lambda checked, name=preset_name: self.load_preset(name))
@@ -816,19 +866,19 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
             save_button.setToolTip(self.tr('save'))
             save_button.setStyleSheet("""
                 QPushButton {
-                    background-color: #569cd6;
+                    background-color: #3c6d96;
                     color: white;
                     border: none;
                     padding: 4px;
                     border-radius: 2px;
-                    font-size: 10px;
-                    min-width: 15px;
-                    min-height: 15px;
-                    max-width: 15px;
-                    max-height: 15px;
+                    font-size: 12px;
+                    min-width: 18px;
+                    min-height: 18px;
+                    max-width: 18px;
+                    max-height: 18px;
                 }
                 QPushButton:hover {
-                    background-color: #6aa4d8;
+                    background-color: #4a7397;
                 }
             """)
             save_button.clicked.connect(lambda checked, name=preset_name: self.save_preset(name))
@@ -838,19 +888,19 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
             rename_button.setToolTip(self.tr('rename'))
             rename_button.setStyleSheet("""
                 QPushButton {
-                    background-color: #569cd6;
+                    background-color: #3c6d96;
                     color: white;
                     border: none;
                     padding: 4px;
                     border-radius: 2px;
-                    font-size: 10px;
-                    min-width: 15px;
-                    min-height: 15px;
-                    max-width: 15px;
-                    max-height: 15px;
+                    font-size: 12px;
+                    min-width: 18px;
+                    min-height: 18px;
+                    max-width: 18px;
+                    max-height: 18px;
                 }
                 QPushButton:hover {
-                    background-color: #6aa4d8;
+                    background-color: #4a7397;
                 }
             """)
             rename_button.clicked.connect(lambda checked, name=preset_name: self.rename_preset(name))
@@ -860,19 +910,19 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
             delete_button.setToolTip(self.tr('delete'))
             delete_button.setStyleSheet("""
                 QPushButton {
-                    background-color: #e74c3c;
+                    background-color: #a2352a;
                     color: white;
                     border: none;
                     padding: 4px;
                     border-radius: 2px;
-                    font-size: 10px;
-                    min-width: 15px;
-                    min-height: 15px;
-                    max-width: 15px;
-                    max-height: 15px;
+                    font-size: 12px;
+                    min-width: 18px;
+                    min-height: 18px;
+                    max-width: 18px;
+                    max-height: 18px;
                 }
                 QPushButton:hover {
-                    background-color: #c0392b;
+                    background-color: #86271e;
                 }
             """)
             delete_button.clicked.connect(lambda checked, name=preset_name: self.delete_preset(name))
@@ -881,7 +931,7 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
             main_layout.addLayout(buttons_layout)
             
             self.presets_list.setItemWidget(item, widget)
-            item.setSizeHint(QSize(widget.sizeHint().width(), 85))
+            item.setSizeHint(QSize(widget.sizeHint().width(), 90))
     
     def load_preset(self, name):
         presets = self.config_manager.get('presets', {})
