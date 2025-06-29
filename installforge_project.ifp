@@ -51,7 +51,7 @@ Allows = 0
 Number = 1000
 Mask = #####-#####-#####-#####
 [SplashScreen]
-Image = D:\Documents\Proyectos\multiringstrobodiscgen\gfx\splash.jpg
+Image = D:\Documents\Proyectos\multiringstrobodiscgen\gfx\splash.png
 Sound = 
 Time = 2
 PlaySound = 0
