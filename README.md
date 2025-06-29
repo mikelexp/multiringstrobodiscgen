@@ -20,13 +20,14 @@ A handy tool for creating custom stroboscopic discs to check if your turntables 
 - **Live preview**: Real-time disc preview with automatic updates
 - **Bilingual interface**: English and Spanish with automatic language detection
 - **Clean interface**: Modern tabbed layout with dark theme
+- **Custom disc text**: Add custom text above and below the spindle for labeling and notes
 - **Mathematical precision**: Automatic calculations for optimal line segments and spacing
 
 ## Screenshots
 
 Simple tabbed layout:
 - **Rings**: Set up your calibration rings with individual settings
-- **Config**: Disc size, spindle hole, and language settings
+- **Options**: Disc size, spindle hole, custom text, and language settings
 - **Export**: Save your creation in SVG or PDF format
 - **Presets**: Save, load, and manage your favorite configurations
 
@@ -175,7 +176,7 @@ The executable will be created in `dist/multiringstrobodiscgen-vX.X.X.exe`
 ## Usage
 
 1. **Start the app**
-2. **Choose language** in the "Config" tab (auto-detected by default)
+2. **Choose language** in the "Options" tab (auto-detected by default)
 3. **Add rings** in the "Rings" tab:
    - Pick your RPM (33⅓, 45, 78, whatever you need)
    - Choose your local frequency (50Hz or 60Hz)
@@ -183,17 +184,18 @@ The executable will be created in `dist/multiringstrobodiscgen-vX.X.X.exe`
    - Lines or dots? Your call
    - Normal or double density
    - Make dots bigger if you want
-4. **Set disc size** in the "Config" tab:
+4. **Set disc options** in the "Options" tab:
    - How big you want your disc
    - Spindle hole size
    - Ring spacing
+   - Add custom text above and below the spindle
 5. **Save it** in the "Export" tab:
    - SVG for printing or PDF for sharing
    - Pick your paper size
 
 ### Language Support
 
-The interface automatically detects your system language and switches between English and Spanish. You can manually change the language in the "Config" tab - settings are saved automatically.
+The interface automatically detects your system language and switches between English and Spanish. You can manually change the language in the "Options" tab - settings are saved automatically.
 
 ## Technical Details
 
@@ -250,13 +252,14 @@ Una herramienta práctica para crear discos estroboscópicos y verificar que tus
 - **Vista previa en tiempo real**: Ve tu disco mientras lo armas con actualizaciones automáticas
 - **Interfaz bilingüe**: Inglés y español con detección automática de idioma
 - **Interfaz moderna**: Diseño con pestañas y tema oscuro
+- **Texto personalizado en disco**: Agrega texto personalizado arriba y abajo del eje para etiquetas y notas
 - **Precisión matemática**: Cálculos automáticos para segmentos y espaciado óptimos
 
 ## Capturas de Pantalla
 
 Interfaz simple con pestañas:
 - **Anillos**: Configura tus anillos de calibración con ajustes individuales
-- **Config**: Tamaño del disco, agujero del eje y configuración de idioma
+- **Opciones**: Tamaño del disco, agujero del eje, texto personalizado y configuración de idioma
 - **Export**: Guarda tu creación en formato SVG o PDF
 - **Presets**: Guarda, carga y administra tus configuraciones favoritas
 
@@ -388,18 +391,20 @@ El ejecutable se creará en `dist/multiringstrobodiscgen-vX.X.X.exe`
 ## Uso
 
 1. **Abre la app**
-2. **Agrega anillos** en la pestaña "Rings":
+2. **Elige idioma** en la pestaña "Opciones" (se detecta automáticamente por defecto)
+3. **Agrega anillos** en la pestaña "Rings":
    - Elige tu RPM (33⅓, 45, 78, lo que necesites)
    - Selecciona tu frecuencia local (50Hz o 60Hz)
    - Ajusta profundidad y espaciado
    - ¿Líneas o puntos? Tú decides
    - Densidad normal o doble
    - Haz los puntos más grandes si quieres
-3. **Configura el tamaño** en la pestaña "Config":
+4. **Configura las opciones** en la pestaña "Opciones":
    - Qué tan grande quieres el disco
    - Tamaño del agujero del eje
    - Espaciado entre anillos
-4. **Guárdalo** en la pestaña "Export":
+   - Agrega texto personalizado arriba y abajo del eje
+5. **Guárdalo** en la pestaña "Export":
    - SVG para imprimir o PDF para compartir
    - Elige el tamaño de papel
 
