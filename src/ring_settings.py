@@ -33,7 +33,7 @@ class RingSettings(QWidget):
         font.setBold(True)
         font.setPointSizeF(font.pointSizeF() * 1.5)
         self.title_label.setFont(font)
-        self.title_label.setStyleSheet("color: #ffffff; margin: 0px; padding: 0px; border: none; background: transparent; font-size: 18px; font-weight: bold;")
+        self.title_label.setStyleSheet("color: #569CD6; margin: 0px; padding: 0px; border: none; background: transparent; font-size: 18px; font-weight: bold;")
         self.title_label.setContentsMargins(0, 0, 0, 0)
         
         # Move up button

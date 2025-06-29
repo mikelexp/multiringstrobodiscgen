@@ -160,21 +160,19 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         self.apply_font_to_widget(self.add_ring_button, 1)
         self.add_ring_button.setStyleSheet("""
             QPushButton {
-                background-color: #238636;
-                border: 2px solid #238636;
-                padding: 6px 14px;
+                background-color: #569CD6;
+                border: none;
+                padding: 3px 14px;
                 font-size: 14px;
                 color: #ffffff;
                 min-height: 27px;
                 max-height: 27px;
             }
             QPushButton:hover {
-                background-color: #2ea043;
-                border-color: #2ea043;
+                background-color: #2E383F;
             }
             QPushButton:pressed {
-                background-color: #1a7f37;
-                border-color: #1a7f37;
+                background-color: #569CD6;
             }
         """)
         self.add_ring_button.clicked.connect(self.add_ring)
@@ -215,7 +213,7 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         params_layout.addLayout(language_layout)
         
         self.measurements_title = QLabel(self.tr('measurements_mm'))
-        self.measurements_title.setStyleSheet("font-weight: bold; font-size: 14px; color: #ffffff; margin: 0px; padding: 0px; border: none; background: transparent;")
+        self.measurements_title.setStyleSheet("font-weight: bold; font-size: 20px; color: #569CD6; margin: 0px; padding: 0px; border: none; background: transparent;")
         self.measurements_title.setContentsMargins(0, 0, 0, 0)
         params_layout.addWidget(self.measurements_title)
         
@@ -224,7 +222,7 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         self.diameter_label = QLabel(self.tr('total_diameter'))
         self.diameter_input = QSpinBox()
         self.diameter_input.setRange(10, 320)
-        self.diameter_input.setValue(200)
+        self.diameter_input.setValue(150)
         self.diameter_input.valueChanged.connect(self.schedule_preview_update)
         diameter_layout.addWidget(self.diameter_label)
         diameter_layout.addWidget(self.diameter_input)
@@ -235,7 +233,7 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         self.spindle_diameter_label = QLabel(self.tr('spindle_diameter'))
         self.spindle_diameter_input = QDoubleSpinBox()
         self.spindle_diameter_input.setRange(0, 20)
-        self.spindle_diameter_input.setValue(7)
+        self.spindle_diameter_input.setValue(7.3)
         self.spindle_diameter_input.setDecimals(2)
         self.spindle_diameter_input.setSingleStep(0.1)
         self.spindle_diameter_input.valueChanged.connect(self.schedule_preview_update)
@@ -270,7 +268,7 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         
         # Text positioning section
         self.disc_text_title = QLabel(self.tr('disc_text'))
-        self.disc_text_title.setStyleSheet("font-weight: bold; font-size: 14px; color: #ffffff; margin: 15px 0px 10px 0px; padding: 0px; border: none; background: transparent;")
+        self.disc_text_title.setStyleSheet("font-weight: bold; font-size: 20px; color: #569CD6; margin: 15px 0px 10px 0px; padding: 0px; border: none; background: transparent;")
         self.disc_text_title.setContentsMargins(0, 0, 0, 0)
         params_layout.addWidget(self.disc_text_title)
         
@@ -340,21 +338,19 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         self.apply_font_to_widget(self.export_button, 1)
         self.export_button.setStyleSheet("""
             QPushButton {
-                background-color: #8957e5;
-                border: 2px solid #8957e5;
-                padding: 6px 14px;
+                background-color: #569CD6;
+                border: none;
+                padding: 3px 14px;
                 font-size: 14px;
                 color: #ffffff;
                 min-height: 27px;
                 max-height: 27px;
             }
             QPushButton:hover {
-                background-color: #a475f9;
-                border-color: #a475f9;
+                background-color: #2E383F;
             }
             QPushButton:pressed {
-                background-color: #7c3aed;
-                border-color: #7c3aed;
+                background-color: #569CD6;
             }
         """)
         self.export_button.clicked.connect(self.export_file)
@@ -375,21 +371,19 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
         self.apply_font_to_widget(self.save_preset_button, 1)
         self.save_preset_button.setStyleSheet("""
             QPushButton {
-                background-color: #238636;
-                border: 2px solid #238636;
-                padding: 6px 14px;
+                background-color: #569CD6;
+                border: none;
+                padding: 3px 14px;
                 font-size: 14px;
                 color: #ffffff;
                 min-height: 27px;
                 max-height: 27px;
             }
             QPushButton:hover {
-                background-color: #2ea043;
-                border-color: #2ea043;
+                background-color: #2E383F;
             }
             QPushButton:pressed {
-                background-color: #1a7f37;
-                border-color: #1a7f37;
+                background-color: #569CD6;
             }
         """)
         self.save_preset_button.clicked.connect(self.save_new_preset)
@@ -708,8 +702,8 @@ class StroboscopeMultiRingsGenerator(QMainWindow):
             widget.deleteLater()
         self.ring_widgets.clear()
         
-        self.diameter_input.setValue(preset_data.get('diameter', 200))
-        self.spindle_diameter_input.setValue(preset_data.get('spindle_diameter', 7.0))
+        self.diameter_input.setValue(preset_data.get('diameter', 150))
+        self.spindle_diameter_input.setValue(preset_data.get('spindle_diameter', 7.3))
         self.outer_circle_width_input.setValue(preset_data.get('outer_circle_width', 1.0))
         self.ring_separation_input.setValue(preset_data.get('ring_separation', 1.0))
         
