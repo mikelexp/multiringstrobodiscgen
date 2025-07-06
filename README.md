@@ -8,28 +8,19 @@ A handy tool for creating custom stroboscopic discs to check if your turntables 
 
 ## Features
 
-- **Multiple rings**: Add as many rings as you want for different RPM speeds
-- **Standard speeds**: 16, 33⅓, 45, 78 RPM plus custom values (1-100 RPM range)
-- **50Hz and 60Hz**: Works with different power frequencies worldwide
-- **Lines or dots**: Choose your preferred visual pattern
-- **Adjustable density**: Normal or double density for better visibility
-- **Dot sizing**: 8 different dot size options (0.5x to 3x scaling)
-- **Ring customization**: Adjustable ring depth, spacing, and dual ring modes
-- **Presets system**: Save, load, rename, and manage your favorite configurations
-- **Export options**: Save as SVG or PDF with different page sizes (A3, A4, Letter, Legal)
-- **Live preview**: Real-time disc preview with automatic updates
-- **Bilingual interface**: English and Spanish with automatic language detection
-- **Clean interface**: Modern tabbed layout with dark theme
-- **Custom disc text**: Add custom text above and below the spindle for labeling and notes
-- **Mathematical precision**: Automatic calculations for optimal line segments and spacing
+- **Multiple calibration rings** for different RPM speeds (16, 33⅓, 45, 78 RPM + custom 1-100 RPM)
+- **Universal compatibility** with 50Hz and 60Hz power frequencies
+- **Flexible visual patterns** - lines or dots with normal/double density
+- **Presets system** - save, load, and manage your favorite configurations
+- **Professional export** - SVG and PDF formats with standard page sizes
+- **Custom labeling** - add text above and below the spindle
+- **Live preview** with real-time updates
+- **Bilingual interface** (English/Spanish) with automatic detection
+- **Mathematical precision** - automatic calculations for optimal segments and spacing
 
-## Screenshots
+## Interface
 
-Simple tabbed layout:
-- **Rings**: Set up your calibration rings with individual settings
-- **Options**: Disc size, spindle hole, custom text, and language settings
-- **Export**: Save your creation in SVG or PDF format
-- **Presets**: Save, load, and manage your favorite configurations
+Clean tabbed layout with **Rings** setup, **Options** configuration, **Export** tools, and **Presets** management.
 
 ## Requirements
 
@@ -201,12 +192,6 @@ The executable will be created in `dist/multiringstrobodiscgen-vX.X.X.exe`
 
 The interface automatically detects your system language and switches between English and Spanish. You can manually change the language in the "Options" tab - settings are saved automatically.
 
-## Technical Details
-
-### Supported Export Formats
-- **SVG**: Scalable vector graphics for high-quality printing
-- **PDF**: Portable document format with standard page sizes (A3, A4, Letter, Legal)
-
 ## Dependencies
 
 - **PySide6**: Modern Qt6 bindings for Python
@@ -244,28 +229,19 @@ Una herramienta práctica para crear discos estroboscópicos y verificar que tus
 
 ## Características
 
-- **Múltiples anillos**: Agrega los anillos que quieras para diferentes velocidades
-- **Velocidades estándar**: 16, 33⅓, 45, 78 RPM más valores personalizados (rango 1-100 RPM)
-- **50Hz y 60Hz**: Funciona con diferentes frecuencias eléctricas
-- **Líneas o puntos**: Elige el patrón visual que prefieras
-- **Densidad ajustable**: Normal o doble para mejor visibilidad
-- **Tamaño de puntos**: 8 opciones diferentes de tamaño (0.5x a 3x)
-- **Personalización de anillos**: Profundidad, espaciado y modos de anillo dual ajustables
-- **Sistema de presets**: Guarda, carga, renombra y administra tus configuraciones favoritas
-- **Opciones de exportación**: Guarda como SVG o PDF con diferentes tamaños (A3, A4, Letter, Legal)
-- **Vista previa en tiempo real**: Ve tu disco mientras lo armas con actualizaciones automáticas
-- **Interfaz bilingüe**: Inglés y español con detección automática de idioma
-- **Interfaz moderna**: Diseño con pestañas y tema oscuro
-- **Texto personalizado en disco**: Agrega texto personalizado arriba y abajo del eje para etiquetas y notas
-- **Precisión matemática**: Cálculos automáticos para segmentos y espaciado óptimos
+- **Múltiples anillos de calibración** para diferentes velocidades (16, 33⅓, 45, 78 RPM + personalizado 1-100 RPM)
+- **Compatibilidad universal** con frecuencias de 50Hz y 60Hz
+- **Patrones visuales flexibles** - líneas o puntos con densidad normal/doble
+- **Sistema de presets** - guarda, carga y administra tus configuraciones favoritas
+- **Exportación profesional** - formatos SVG y PDF con tamaños de página estándar
+- **Etiquetado personalizado** - agrega texto arriba y abajo del eje
+- **Vista previa en tiempo real** con actualizaciones automáticas
+- **Interfaz bilingüe** (inglés/español) con detección automática
+- **Precisión matemática** - cálculos automáticos para segmentos y espaciado óptimos
 
-## Capturas de Pantalla
+## Interfaz
 
-Interfaz simple con pestañas:
-- **Anillos**: Configura tus anillos de calibración con ajustes individuales
-- **Opciones**: Tamaño del disco, agujero del eje, texto personalizado y configuración de idioma
-- **Export**: Guarda tu creación en formato SVG o PDF
-- **Presets**: Guarda, carga y administra tus configuraciones favoritas
+Diseño limpio con pestañas para configuración de **Anillos**, **Opciones**, herramientas de **Export** y gestión de **Presets**.
 
 ## Requisitos
 
@@ -413,12 +389,6 @@ El ejecutable se creará en `dist/multiringstrobodiscgen-vX.X.X.exe`
 5. **Guárdalo** en la pestaña "Export":
    - SVG para imprimir o PDF para compartir
    - Elige el tamaño de papel
-
-## Detalles Técnicos
-
-### Formatos de Exportación Soportados
-- **SVG**: Gráficos vectoriales escalables para impresión de alta calidad
-- **PDF**: Formato de documento portable con tamaños de página estándar (A3, A4, Letter, Legal)
 
 ## Dependencias
 
