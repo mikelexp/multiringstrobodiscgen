@@ -159,6 +159,8 @@ chmod +x build-linux.sh
 
 The executable will be created in `dist/multiringstrobodiscgen-vX.X.X.bin`
 
+**Note about Linux Dependencies**: The build script automatically detects and includes the `libgthread-2.0` library (required by PySide6) if available on the build system. This ensures the executable works on systems where this library might not be available. The script is cross-distribution compatible and will work on openSUSE, Ubuntu, Fedora, Arch Linux, and other distributions.
+
 
 #### Windows
 ```powershell
@@ -377,6 +379,8 @@ chmod +x build-linux.sh
 ```
 
 El ejecutable se creará en `dist/multiringstrobodiscgen-vX.X.X.bin`
+
+**Nota sobre Dependencias en Linux**: El script de compilación detecta automáticamente e incluye la librería `libgthread-2.0` (requerida por PySide6) si está disponible en el sistema de compilación. Esto asegura que el ejecutable funcione en sistemas donde esta librería podría no estar disponible. El script es compatible con diferentes distribuciones y funcionará en openSUSE, Ubuntu, Fedora, Arch Linux, y otras distribuciones.
 
 
 #### Windows

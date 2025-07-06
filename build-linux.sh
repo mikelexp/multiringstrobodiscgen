@@ -23,6 +23,16 @@ VERSION=$(python src/version.py)
 # Get system architecture
 ARCH=$(uname -m)
 
+# Check for gthread library and set parameter if found
+GTHREAD_LIB=$(find /usr/lib* -name "libgthread-2.0.so.0" 2>/dev/null | head -1)
+if [ -n "$GTHREAD_LIB" ]; then
+	GTHREAD_PARAM="--include-data-files=$GTHREAD_LIB=./libgthread-2.0.so.0"
+	echo "Found gthread library at: $GTHREAD_LIB"
+else
+	GTHREAD_PARAM=""
+	echo "Warning: gthread library not found. The executable may require libgthread-2.0 to be installed on target systems."
+fi
+
 # Build with versioned output name
 if [ -n "$ICON_PARAM" ]; then
 	python -m nuitka start.py \
@@ -36,6 +46,9 @@ if [ -n "$ICON_PARAM" ]; then
 	--include-module=tempfile \
 	--include-module=reportlab \
 	--include-package=reportlab \
+	--onefile-tempdir-spec="{TEMP}/multiringstrobodiscgen" \
+	--assume-yes-for-downloads \
+	$GTHREAD_PARAM \
 	--windows-console-mode=disable \
 	$ICON_PARAM
 else
@@ -50,6 +63,9 @@ else
 	--include-module=tempfile \
 	--include-module=reportlab \
 	--include-package=reportlab \
+	--onefile-tempdir-spec="{TEMP}/multiringstrobodiscgen" \
+	--assume-yes-for-downloads \
+	$GTHREAD_PARAM \
 	--windows-console-mode=disable
 fi
 
