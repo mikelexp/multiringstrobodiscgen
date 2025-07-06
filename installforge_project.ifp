@@ -57,7 +57,7 @@ Time = 2
 PlaySound = 0
 Allow = 1
 [Build]
-File = C:\Users\mikele\Documents\Proyectos\multiringstrobodiscgen\dist\multiringstrobodiscgen-setup-v0.9.3-x86_64.exe
+File = C:\Users\mikele\Documents\Proyectos\multiringstrobodiscgen\dist\multiringstrobodiscgen-setup-v0.9.4-x86_64.exe
 SetupIconPath = C:\Users\mikele\Documents\Proyectos\multiringstrobodiscgen\gfx\icon.ico
 UninstallIconPath = C:\Users\mikele\Documents\Proyectos\multiringstrobodiscgen\gfx\icon.ico
 CompressionMethod = 0
